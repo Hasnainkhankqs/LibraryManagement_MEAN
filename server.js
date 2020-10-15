@@ -26,6 +26,8 @@ const loginroute = require('./backend/routes/login');
 app.use('/api', loginroute);
 
 
+
+//root point for testing
 app.get("/" , (req , res ) => {
     res.send("root get request hit")
 })
@@ -41,12 +43,14 @@ app.use((req, res, next) => {
  });
 
 
+//error handler
 app.use((err, req , res , next ) => {
     res.status(err.status || 500);
     res.json({
         error : {
             status : err.status,
-            message : err.message
+            message : err.message,
+            reason : err.reason
         }
     })    
 });

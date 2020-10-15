@@ -17,4 +17,4 @@ const userSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('UserModel', userSchema);
+module.exports = mongoose.model('UserModel', userSchema , "usertable");

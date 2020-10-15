@@ -1,17 +1,10 @@
 const express = require('express');
+const { nextTick } = require('process');
 const loginroutes = express.Router();
 
 // login model
 const userModel = require("../model/login");
 
-
-
-// Generic error handler used by all endpoints.
-function handleRoutesError(res, reason, message, code) {
- 
-    res.status(code || 500).json({"error": message , "reason" : reason});
-  
-}
 
 
 
@@ -20,15 +13,15 @@ function handleRoutesError(res, reason, message, code) {
  *    POST: creates a new user
  */
 
-loginroutes.get("/loginroutes", function(req, res) {
+loginroutes.get("/loginroutes", function (req, res) {
 
-    userModel.find((err,result) => {
+    userModel.find((err, result) => {
 
-        if(err){
+        if (err) {
             handleRoutesError(res, err.message, "Failed to get users.");
         }
 
-        else{
+        else {
             res.status(200).json(result);
         }
     })
@@ -36,22 +29,31 @@ loginroutes.get("/loginroutes", function(req, res) {
 });
 
 
-loginroutes.post("/loginroutes", function(req, res) {
-    const user = new userModel(req.body);
+loginroutes.post("/loginroutes", (req, res, next) => {
+    const user = new userModel({
+        name : req.body.name,
+        password : req.body.password,
+        role : req.body.role,
+        
+    });
 
-    user.save().then(
+
+    user.save()
+      .then(
         item => {
             res.json({
-                result : {
-                    output : item,
-                    greet : "shukar"
+                result: {
+                    output: item,
+                    greet: "shukar"
                 }
             })
-        }
-    ).catch(
+        })
+        .catch(
         err => {
-            // res.status(400).send(err );
-            handleRoutesError(res, err.message, "Failed to add user.");
+
+            err.status = 500;
+            err.reason = "insertion of user failed";
+            next(err);
 
         }
     )
@@ -63,13 +65,13 @@ loginroutes.post("/loginroutes", function(req, res) {
  *    DELETE: deletes user by id
  */
 
-loginroutes.get("/loginroutes/:id", function(req, res) {
+loginroutes.get("/loginroutes/:id", function (req, res) {
 });
 
-loginroutes.put("/loginroutes/:id", function(req, res) {
+loginroutes.put("/loginroutes/:id", function (req, res) {
 });
 
-loginroutes.delete("/loginroutes/:id", function(req, res) {
+loginroutes.delete("/loginroutes/:id", function (req, res) {
 });
 
 module.exports = loginroutes;
