@@ -28,7 +28,7 @@ export class AppComponent implements OnInit  {
     this.getEmployees().subscribe((res) =>  {
       console.log(res)
     },(error) => {
-      console.log(error.error.error.message);
+      console.log(error.status);
     });
   }
   onSubmit(){

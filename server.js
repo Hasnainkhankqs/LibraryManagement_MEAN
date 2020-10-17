@@ -60,3 +60,9 @@ app.listen(port, () => {
     console.log(`server started on port ${port}`);
   
 });
+
+
+
+// .env
+// DB_URI = mongodb://127.0.0.1:27017/librarymanagementdb
+// PORT = 3000

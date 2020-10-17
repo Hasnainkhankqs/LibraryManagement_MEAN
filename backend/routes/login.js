@@ -1,5 +1,4 @@
 const express = require('express');
-const { nextTick } = require('process');
 const loginroutes = express.Router();
 
 // login model
@@ -13,12 +12,13 @@ const userModel = require("../model/login");
  *    POST: creates a new user
  */
 
-loginroutes.get("/loginroutes", function (req, res) {
+loginroutes.get("/loginroutes", function (req, res , next) {
 
     userModel.find((err, result) => {
 
         if (err) {
-            handleRoutesError(res, err.message, "Failed to get users.");
+            err.message = "Failed to load users"
+            next(err);
         }
 
         else {
