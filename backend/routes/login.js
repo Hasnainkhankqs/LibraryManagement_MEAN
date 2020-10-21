@@ -12,17 +12,18 @@ const userModel = require("../model/login");
  *    POST: creates a new user
  */
 
-loginroutes.get("/loginroutes", function (req, res , next) {
+loginroutes.get("/loginroutes", (req, res , next) => {
 
     userModel.find((err, result) => {
 
-        if (err) {
+        if (!err) {
+            const allUsers = result;
+            res.status(200).json(result);
+        }
+        
+        else {
             err.message = "Failed to load users"
             next(err);
-        }
-
-        else {
-            res.status(200).json(result);
         }
     })
 
@@ -30,33 +31,44 @@ loginroutes.get("/loginroutes", function (req, res , next) {
 
 
 loginroutes.post("/loginroutes", (req, res, next) => {
-    const user = new userModel({
-        name : req.body.name,
-        password : req.body.password,
-        role : req.body.role,
+    // const user = new userModel({
+    //     name : req.body.name,
+    //     password : req.body.password,
+    //     role : req.body.role,
         
+    // });
+
+    // Filter user from the users array by username and password
+
+    const user =  userModel.find({
+
+        name : req.body.name
     });
 
 
-    user.save()
-      .then(
-        item => {
-            res.json({
-                result: {
-                    output: item,
-                    greet: "shukar"
-                }
-            })
-        })
-        .catch(
-        err => {
+        var myName = user.name;
+        // console.log(tojson(myName));
+    
+    // user.then((r)=> {
+    //     console.log(r.name)
+    // });
 
-            err.status = 500;
-            err.reason = "insertion of user failed";
-            next(err);
+//   console.log(userExists);
 
-        }
-    )
+    // user.save()
+    //   .then(item => {
+    //         res.json({
+    //             result: {
+    //                 output: item,
+    //                 greet: "shukar"
+    //             }
+    //         })
+    //     }).catch(err => {
+    //         err.status = 500;
+    //         err.reason = "insertion of user failed";
+    //         next(err);
+    //     }
+    // )
 });
 
 /*  "/login/:id"

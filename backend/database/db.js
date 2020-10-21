@@ -21,29 +21,31 @@ const mongoose  = require('mongoose');
 
 // by rahul
 
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/mydb";
+// var MongoClient = require('mongodb').MongoClient;
+// var url = "mongodb://localhost:27017/mydb";
 
 
-app.get("/" , (req , res ) => {
-  MongoClient.connect(url, function(err, db) {
 
-    if (err) {
+//   MongoClient.connect(url , function(err, db) {
+
+//     if (err) {
       
-      if(err.name=='MongoNetworkError') {
-        console.log("Error in connection to mongodb");
+//       if(err.name=='MongoNetworkError') {
+//         console.log("Error in connection to mongodb");
         
-      } else{
-        console.log("some other error ");
-        db.close();
-      }
-    }
-    else {
-    console.log("success");
-    db.close();
-    }
-  });
-})
+//       } else{
+//         console.log("some other error ");
+//         db.close();
+//       }
+//     }
+//     else {
+//     console.log("success");
+//     db.close();
+//     }
+//   });
+
+
+
 // let a = mongoose.connection.on('connected', (res) => {
 //     console.log(`Mongoose connected to ${res}`);
 //   });
@@ -64,17 +66,17 @@ app.get("/" , (req , res ) => {
 
 //using promise
 
-//   mongoose.connect(process.env.DB_URI , { useNewUrlParser : true , useUnifiedTopology: true })
-//   .then((db) => console.log("database connected succesfully"))
-//   .catch((err) => { 
-//   console.log("mongodb database connection failed");
-//   process.exit(1);
-// });
+  mongoose.connect(process.env.DB_URI , { useNewUrlParser : true , useUnifiedTopology: true })
+  .then((db) => console.log("database connected succesfully"))
+  .catch((err) => { 
+  console.log("mongodb database connection failed");
+  process.exit(1);
+});
 
 
 
 
-
+// using async await 
 
   // async function mongooseconnection(){
   //   let db

@@ -9,18 +9,15 @@ const port = process.env.PORT
 require("./backend/database/db");
 
 
-
-
-
 //middleware
 app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(morgan("dev"));
 
 //getting all routes
-
 const loginroute = require('./backend/routes/login');
+
 
 // RESTful API root
 app.use('/api', loginroute);
@@ -60,9 +57,3 @@ app.listen(port, () => {
     console.log(`server started on port ${port}`);
   
 });
-
-
-
-// .env
-// DB_URI = mongodb://127.0.0.1:27017/librarymanagementdb
-// PORT = 3000
