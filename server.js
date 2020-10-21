@@ -57,3 +57,8 @@ app.listen(port, () => {
     console.log(`server started on port ${port}`);
   
 });
+
+
+// .env
+// PORT = 3000
+// DB_URI = mongodb://localhost:27017/library

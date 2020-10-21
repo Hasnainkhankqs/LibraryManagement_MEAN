@@ -30,7 +30,7 @@ loginroutes.get("/loginroutes", (req, res , next) => {
 });
 
 
-loginroutes.post("/loginroutes", (req, res, next) => {
+loginroutes.post("/loginroutes", async (req, res, next) => {
     // const user = new userModel({
     //     name : req.body.name,
     //     password : req.body.password,
@@ -40,14 +40,12 @@ loginroutes.post("/loginroutes", (req, res, next) => {
 
     // Filter user from the users array by username and password
 
-    const user =  userModel.find({
+    const user = await userModel.find({
 
         name : req.body.name
     });
 
-
-        var myName = user.name;
-        // console.log(tojson(myName));
+        console.log(user);
     
     // user.then((r)=> {
     //     console.log(r.name)
