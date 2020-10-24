@@ -1,28 +1,22 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const loginroutes = express.Router();
-
-// login model
-const userModel = require("../model/login");
+const userModel = require("../model/user");
 
 
 
-
-/*  "/api/login"
- *    GET: finds all login
- *    POST: creates a new user
- */
-
-loginroutes.get("/loginroutes", (req, res , next) => {
+loginroutes.get("/login", (req, res , next) => {
 
     userModel.find((err, result) => {
 
         if (!err) {
             const allUsers = result;
-            res.status(200).json(result);
+            res.status(200).json(allUsers);
         }
         
         else {
-            err.message = "Failed to load users"
+            err.whereError = "Error occured in veiwing from login user route";
+            err.message = "Failed to load users";
             next(err);
         }
     })
@@ -30,50 +24,34 @@ loginroutes.get("/loginroutes", (req, res , next) => {
 });
 
 
-loginroutes.post("/loginroutes", async (req, res, next) => {
-    // const user = new userModel({
-    //     name : req.body.name,
-    //     password : req.body.password,
-    //     role : req.body.role,
-        
-    // });
+loginroutes.post("/login", async (req, res, next) => {
 
-    // Filter user from the users array by username and password
+    
+    const user = await userModel.findOne({
 
-    const user = await userModel.find({
-
-        name : req.body.name
+        name : req.body.name , password : req.body.password
     });
 
-        console.log(user);
     
-    // user.then((r)=> {
-    //     console.log(r.name)
-    // });
+    if(user) {
+    console.log("user exists");
 
-//   console.log(userExists);
+    const accessToken = jwt.sign({ name: user.name,  role: user.role }, process.env.accessTokenSecret);
+    res.json({
+        accessToken
+    });
+    }
+    
 
-    // user.save()
-    //   .then(item => {
-    //         res.json({
-    //             result: {
-    //                 output: item,
-    //                 greet: "shukar"
-    //             }
-    //         })
-    //     }).catch(err => {
-    //         err.status = 500;
-    //         err.reason = "insertion of user failed";
-    //         next(err);
-    //     }
-    // )
+    else{
+        console.log("Username or password incorrect");
+        res.json({
+            message: "Username or password incorrect"
+        })
+    }
+
 });
 
-/*  "/login/:id"
- *    GET: find user by id
- *    PUT: update user by id
- *    DELETE: deletes user by id
- */
 
 loginroutes.get("/loginroutes/:id", function (req, res) {
 });
