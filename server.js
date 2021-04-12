@@ -3,7 +3,7 @@ const express = require('express');
 const morgan = require("morgan");
 const app = express();
 const cors = require('cors');
-const port = process.env.PORT
+const port = process.env.PORT || 3000
 
 //adding mongodb connection
 require("./backend/database/db");
